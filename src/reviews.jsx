@@ -11,11 +11,7 @@ function Reviews() {
 
     return undefined;
   });
-  const history = useHistory();
-  if (reviews === undefined) {
-    history.push("/give_review");
-  }
-  if (reviews.length === 0) {
+  if (reviews === undefined || reviews.length === 0) {
     return (
       <div>
         <h1 className="container pt-5">No Reviews to Show</h1>
