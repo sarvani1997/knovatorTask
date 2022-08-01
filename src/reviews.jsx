@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function Reviews() {
@@ -9,7 +9,22 @@ function Reviews() {
       return JSON.parse(r);
     }
 
-    return undefined;
+    return localStorage.setItem(
+      "reviews",
+      JSON.stringify([
+        {
+          title: "Office Table",
+          rating: 7,
+          description: "Good table",
+          id: 1,
+        },
+        {
+          title: "Office chair",
+          rating: 10,
+          id: 2,
+        },
+      ])
+    );
   });
   if (reviews === undefined || reviews.length === 0) {
     return (
