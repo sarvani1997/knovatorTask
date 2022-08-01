@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import "./App.css";
 
 function App() {
   const [title, setTitle] = useState("");
   const [rating, setRating] = useState("");
   const [description, setDescription] = useState("");
+  const history = useHistory();
 
   const onReset = () => {
     setTitle("");
@@ -14,23 +16,30 @@ function App() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const review = [{ title, rating, description }];
+    const review = { title, rating, description, id: Date.now() };
     console.log(review);
     const getReviews = JSON.parse(localStorage.getItem("reviews"));
     console.log("getReviews", getReviews);
     if (getReviews === null) {
-      localStorage.setItem("reviews", JSON.stringify(review));
+      localStorage.setItem("reviews", JSON.stringify([review]));
     } else {
       console.log("exists");
       getReviews.push(review);
+      console.log(getReviews);
       localStorage.setItem("reviews", JSON.stringify(getReviews));
     }
     onReset();
+    history.push("/");
   };
 
   return (
-    <div className="container">
-      <h3>Review Form</h3>
+    <div className="container pt-5">
+      <div className="row">
+        <h3 className="col-10">Give Review</h3>
+        <Link className="btn btn-primary col-2" to="/">
+          Reviews
+        </Link>
+      </div>
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
@@ -53,9 +62,11 @@ function App() {
           <input
             required
             type="number"
+            max={10}
+            min={0}
             className="form-control"
             id="rating"
-            placeholder="Rating for the Review."
+            placeholder="Rate between 0 - 10 for the Review."
             value={rating}
             onChange={(e) => setRating(e.target.value)}
           />
